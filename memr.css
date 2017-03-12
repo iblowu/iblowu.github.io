@@ -22,7 +22,7 @@ nav{
     -moz-transition: background 1s ease-out;  
     background-size:1px 200px;
 	
-	width:20%;
+	width:10%;
 	float:left;
 	height:100px;
 	box-sizing: border-box;
@@ -64,6 +64,7 @@ h1{
 	margin:auto;
 	height:400px;
 	width:100%;
+	border-bottom:1px solid black;
 
 	
 }
@@ -75,7 +76,7 @@ h2 {
 	margin:auto;
 	margin-top:0px;
 	width:800px;
-	height:400px;
+	height:350px;
 }
 button{
 	float:left;
@@ -92,7 +93,16 @@ button{
 	left:94.5%;
 
 }
+#dllink{
+	margin:auto;
+	margin-top:40px;
+	width:400px;
+	height:50px;
+	
+	
+}
 footer{
+	text-align:center;
 	border-top:2px solid black;
 	border-bottom:2px solid black;
 	width:auto;
