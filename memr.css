@@ -1,0 +1,100 @@
+html *{
+	font-family: 'Raleway', sans-serif;
+}
+
+body {
+	
+	max-width:100%;
+	height:100%;
+	background-color: #818181;
+	margin-left: auto;
+	margin-right: auto;
+}
+nav{
+	border-top:2px solid black;
+	border-bottom:2px solid black;
+	width:auto;
+	height:100px;
+}
+.navbar{
+	background: linear-gradient(#7d7e7d 25%,#0e0e0e 150% );  
+    -webkit-transition: background 1s ease-out;  
+    -moz-transition: background 1s ease-out;  
+    background-size:1px 200px;
+	
+	width:20%;
+	float:left;
+	height:100px;
+	box-sizing: border-box;
+	border-right:1px solid black;
+	text-align:center;
+	text-decoration:none;
+	padding-top:38px;
+	font-weight:bold;
+	font-size:24px;
+	
+}
+.navbar:hover{
+	  background-position:100px;  
+}
+a{
+	color:inherit;
+	text-decoration:none;
+	cursor:pointer;
+}
+a:hover{
+	  color:white;
+}
+
+header{
+	height:auto;
+	width:473px;
+	margin:auto;
+	
+}
+h1{
+	font-size:64px;
+	padding-top:36px;
+	text-align:center;
+	margin:auto;
+	height:100px;
+	width:800px;
+}
+.h2container{
+	margin:auto;
+	height:400px;
+	width:100%;
+
+	
+}
+h2 {
+	text-align:center;
+	margin-top:0px;
+}
+.btncntnr{
+	margin:auto;
+	margin-top:0px;
+	width:800px;
+	height:400px;
+}
+button{
+	float:left;
+	padding:0px;
+	font-weight:bold;
+	margin:5px;
+	width:100px;
+	height:50px;
+}
+#edpic{
+	position:fixed;
+	-webkit-transform: rotate(270deg);
+	top:80%;
+	left:94.5%;
+
+}
+footer{
+	border-top:2px solid black;
+	border-bottom:2px solid black;
+	width:auto;
+	height:100px;
+}
