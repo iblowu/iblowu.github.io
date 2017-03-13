@@ -4,26 +4,51 @@
 		<title>HALO SOUNDBOARD</title>
 		<link rel="stylesheet" href="memr.css">
 		<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+		<link rel="shortcut icon" href="favicon.ico">
 		<script src="jquery-3.1.1.min.js"></script>
 		<!--<script type="text/javascript">	</script>-->
 		<script>
 		$(document).ready(function(){
+			
+			$("#news").show(2000);
+			
+			
+			var today = new Date("03/13/2017");
+			setInterval(function(){
+			var otherday = new Date();
+			if(today.setHours(0,0,0,0) !== otherday.setHours(0,0,0,0)){
+				$("#news").hide(2000);
+			}},60000*60)
+			
+			$("a").on('click', function(event) {
+
+				if (this.hash !== "") {
+					event.preventDefault();
+					var hash = this.hash;
+					$('html, body').animate({
+						scrollTop: $(hash).offset().top
+					}, 800,
+					function(){
+						window.location.hash = hash;
+					});
+				}
+			});
+		
+		
 			$("#edpic").mouseenter(function(){
 				$("#edpic").animate({
 				left: "-=50px"},"slow"
 				);
 			});
-		});
-		$(document).ready(function(){
 			$("#edpic").mouseleave(function(){
 				$("#edpic").animate({
 				left: "+=50px"},"slow"
 				);
 			});
 		});
-		</script>
-		
+		</script>	
 	</head>
+	
 	<body>
 		<audio id="a1" src="soundz/ed1.mp3" preload="none"  ></audio>
 		<audio id="a2" src="soundz/ed2.mp3" preload="none"  ></audio>
@@ -48,6 +73,7 @@
 		<audio id="a21" src="soundz/ed21.mp3" preload="none"  ></audio>
 		<audio id="a22" src="soundz/ed22.mp3" preload="none"  ></audio>
 		<audio id="a23" src="soundz/ed23.mp3" preload="none"  ></audio>
+		<audio id="a24" src="soundz/ed24.mp3" preload="none"  ></audio>
 		
 		<audio id="a1001" src="soundz/damea1.mp3" preload="none"  ></audio>
 		<audio id="a1002" src="soundz/damea2.mp3" preload="none"  ></audio>
@@ -55,6 +81,7 @@
 		<audio id="a1004" src="soundz/damea4.mp3" preload="none"  ></audio>
 		<audio id="a1005" src="soundz/damea5.mp3" preload="none"  ></audio>
 		<audio id="a1006" src="soundz/damea6.mp3" preload="none"  ></audio>
+		<audio id="a1007" src="soundz/damea7.mp3" preload="none"  ></audio>
 		
 		<audio id="a2001" src="soundz/ben1.mp3" preload="none"  ></audio>
 		<audio id="a2002" src="soundz/ben2.mp3" preload="none"  ></audio>
@@ -88,11 +115,14 @@
 		
 		<audio id="a7001" src="soundz/zero1.mp3" preload="none"  ></audio>
 		<audio id="a7002" src="soundz/zero2.mp3" preload="none"  ></audio>
+		<audio id="a7003" src="soundz/zero3.mp3" preload="none"  ></audio>
+		<audio id="a7004" src="soundz/zero4.mp3" preload="none"  ></audio>
 	
 		<audio id="a9001" src="soundz/tywin1.mp3" preload="none"  ></audio>
 		<audio id="a9002" src="soundz/huzzaa1.mp3" preload="none"  ></audio>
 		<audio id="a9003" src="soundz/memr1.mp3" preload="none"  ></audio>
 		<audio id="a9004" src="soundz/memr2.mp3" preload="none"  ></audio>
+		<audio id="a9005" src="soundz/huzzaa2.mp3" preload="none"  ></audio>
 		
 		<audio id="a10001" src="soundz/goldroll.mp3" preload="none"  ></audio>
 		<audio id="a10002" src="soundz/halo1.mp3" preload="none"  ></audio>
@@ -105,12 +135,12 @@
 		<audio id="a10009" src="soundz/halo6.mp3" preload="none"  ></audio>
 		<audio id="a10010" src="soundz/halo7.mp3" preload="none"  ></audio>
 		
-		
 		<audio id="a100000" src="soundz/mmm.mp3" preload="none"  ></audio>
 		
 		<header>
 			<img alt="Home" src="http://www.halo-guild.eu/styles/Jade/theme/images_halo/logo.png">
 		</header>
+		
 		<nav>
 			<div class="navbar"><a href="#edlh">Edlh</a></div>
 			<div class="navbar"><a href="#damea">Damea</a></div>
@@ -123,7 +153,14 @@
 			<div class="navbar"><a href="#misc">Misc</a></div>
 			<div class="navbar"><a href="#halo">Halo</a></div>
 		</nav>
-		<h1>HALO SOUNDBOARD</h1>
+		
+		<div id="name">
+			<div id="news" style="display:none;">
+				<p id="nparagraph">5 new sounds added today </p>
+			</div>
+			<h1>HALO SOUNDBOARD</h1>
+		</div>
+		
 		<div class="h2container">
 			<h2 id="edlh">Edlh</h2>
 			<div class="btncntnr">
@@ -150,8 +187,10 @@
 				<button onclick="document.getElementById('a21').play()">How is this a dick</button>
 				<button onclick="document.getElementById('a22').play()">Say my name</button>
 				<button onclick="document.getElementById('a23').play()">My head</button>
+				<button onclick="document.getElementById('a24').play()">Pee on yourself</button>
 			</div>
 		</div>
+		
 		<div class="h2container">
 			<h2 id="damea">Damea</h2>
 			<div class="btncntnr">
@@ -161,8 +200,10 @@
 				<button onclick="document.getElementById('a1004').play()">????</button>
 				<button onclick="document.getElementById('a1005').play()">Eh</button>
 				<button onclick="document.getElementById('a1006').play()">What was that</button>
+				<button onclick="document.getElementById('a1007').play()">Yoohoo</button>
 			</div>
 		</div>
+		
 		<div class="h2container">
 			<h2 id="blurbs">Blurbs</h2>
 			<div class="btncntnr">
@@ -182,6 +223,7 @@
 				<button onclick="document.getElementById('a2014').play()">Welstead innervate</button>
 			</div>
 		</div>
+		
 		<div class="h2container">
 			<h2 id="rolf">Rooftosser</h2>
 			<div class="btncntnr">
@@ -189,6 +231,7 @@
 				<button onclick="document.getElementById('a3002').play()">Do not release</button>
 			</div>
 		</div>
+		
 		<div class="h2container">
 			<h2 id="alex">Alex</h2>
 			<div class="btncntnr">
@@ -198,6 +241,7 @@
 				<button onclick="document.getElementById('a4004').play()">Good</button>
 			</div>
 		</div>
+		
 		<div class="h2container">
 			<h2 id="sonc">Sonc</h2>
 			<div class="btncntnr">
@@ -207,19 +251,24 @@
 				<button onclick="document.getElementById('a5004').play()">Wa</button>
 			</div>
 		</div>
+		
 		<div class="h2container">
 			<h2 id="hs">Hellshield</h2>
 			<div class="btncntnr">
 				<button onclick="document.getElementById('a6001').play()">Boost for rice</button>
 			</div>
 		</div>
+		
 		<div class="h2container">
 			<h2 id="zero">Zero</h2>
 			<div class="btncntnr">
 				<button onclick="document.getElementById('a7001').play()">Nasty</button>
 				<button onclick="document.getElementById('a7002').play()">I can help you with that</button>
+				<button onclick="document.getElementById('a7003').play()">Problem</button>
+				<button onclick="document.getElementById('a7004').play()">Hehehe</button>
 			</div>
 		</div>
+		
 		<div class="h2container">
 			<h2 id="misc">Misc</h2>
 			<div class="btncntnr">
@@ -227,8 +276,10 @@
 				<button onclick="document.getElementById('a9002').play()">Good moves</button>
 				<button onclick="document.getElementById('a9003').play()">Heroism on pull</button>
 				<button onclick="document.getElementById('a9004').play()">Trialing</button>
+				<button onclick="document.getElementById('a9005').play()">Windy</button>
 			</div>
 		</div>
+		
 		<div class="h2container">
 			<h2 id="halo">Halo</h2>	
 			<div class="btncntnr">
@@ -243,10 +294,10 @@
 				<button onclick="document.getElementById('a10009').play()">oooooo</button>
 				<button onclick="document.getElementById('a10010').play()">damea noises</button>
 			</div>
-		</div>	
-		<img onmouseover="document.getElementById('a100000').play()" id="edpic" alt="EDLA" src="http://imgur.com/yGsqklh.png">
+		</div>
+		
+		<img onmouseover="document.getElementById('a100000').play()" onclick="document.getElementById('a23').play()" id="edpic" alt="EDLA" src="http://imgur.com/yGsqklh.png">
 		<footer>
 		</footer>
 	</body>
-
 </html>
