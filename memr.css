@@ -1,3 +1,4 @@
+
 html *{
 	font-family: 'Raleway', sans-serif;
 }
@@ -52,13 +53,23 @@ header{
 	margin:auto;
 	
 }
-h1{
-	font-size:64px;
-	padding-top:36px;
+#name{
 	text-align:center;
 	margin:auto;
-	height:100px;
+	height:150px;
 	width:800px;
+}
+#news{
+	padding-top:15px;
+	padding-bottom:15px;
+}
+#nparagraph{
+	display:inline;
+}
+h1{
+	font-size:64px;
+	margin-top:0px;
+	margin-bottom:0px;
 }
 .h2container{
 	margin:auto;
@@ -86,6 +97,7 @@ button{
 	width:100px;
 	height:50px;
 }
+
 #edpic{
 	position:fixed;
 	-webkit-transform: rotate(270deg);
