@@ -10,6 +10,14 @@ const history = document.querySelector('#history-network');
 
 const after_load=function(){
     showTopics.classList.add('fade-in');
+
+    let continents = read_file("https://github.com/annexare/Countries/blob/master/data/countries.json");
+    let countries = read_file("../data/countries.json");
+    let languages = read_file("../data/languages.json");
+
+    console.log(countries);
+    console.table(countries);
+    console.log(continents)
 }
 
 window.onload = after_load;
@@ -43,11 +51,6 @@ function window_to_show(e) {
     if (e.target.textContent === "History") {
         grid.setAttribute('style', 'display:none;');
         history.setAttribute('style', 'display:block');
-        let continents = read_file("../data/continents.json");
-        let countries = read_file("../data/countries.json");
-        let languages = read_file("../data/languages.json");
-
-        console.table(countries);
 
         generate_network();
 
