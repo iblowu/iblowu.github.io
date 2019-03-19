@@ -63,7 +63,6 @@ showTopics.addEventListener('click', show_grid);
 
 
 function generate_network() {
-    console.log(continents, count);
     var nodes = new vis.DataSet();
     var edges = new vis.DataSet();
 
