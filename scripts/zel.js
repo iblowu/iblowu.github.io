@@ -13,7 +13,7 @@ var languages;
 const after_load=function(){
     showTopics.classList.add('fade-in');
 
-    //continents = JSON.parse(read_file("../data/continents.json"));
+    conti = JSON.parse(read_file("../data/continents.json"));
     //countries = JSON.parse(read_file("../data/countries.json"));
     //languages = JSON.parse(read_file("../data/languages.json"));
 }
@@ -63,7 +63,7 @@ showTopics.addEventListener('click', show_grid);
 
 
 function generate_network() {
-
+    console.log(continents, conti);
     var nodes = new vis.DataSet();
     var edges = new vis.DataSet();
 
