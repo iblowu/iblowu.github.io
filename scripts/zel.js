@@ -13,9 +13,9 @@ var languages;
 const after_load=function(){
     showTopics.classList.add('fade-in');
 
-    continents = JSON.parse(read_file("../data/continents.json"));
-    countries = JSON.parse(read_file("../data/countries.json"));
-    languages = JSON.parse(read_file("../data/languages.json"));
+    continents = read_file("../data/continents.json"));
+    countries = read_file("../data/countries.json"));
+    languages = read_file("../data/languages.json"));
 
 }
 
