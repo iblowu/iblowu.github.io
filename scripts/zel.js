@@ -1,4 +1,4 @@
-// JavaScript source code
+﻿// JavaScript source code
 const showTopics = document.querySelector('#actions > button');
 const grid = document.querySelector('.wrapper');
 const buttons = document.querySelectorAll('.grid-item > button');
@@ -51,7 +51,6 @@ function window_to_show(e) {
         grid.setAttribute('style', 'display:none;');
         history.setAttribute('style', 'display:block');
 
-        console.log(countries);
         generate_network();
 
     }
@@ -65,31 +64,62 @@ showTopics.addEventListener('click', show_grid);
 
 
 function generate_network() {
-    var nodes = new vis.DataSet([
-  { id: 1, label: 'Node 1' },
-  { id: 2, label: 'Node 2' },
-  { id: 3, label: 'Node 3' },
-  { id: 4, label: 'Node 4' },
-  { id: 5, label: 'Node 5' }
-    ]);
 
-    // create an array with edges
-    var edges = new vis.DataSet([
-        { from: 1, to: 3 },
-        { from: 1, to: 2 },
-        { from: 2, to: 4 },
-        { from: 2, to: 5 }
-    ]);
+    var nodes = new vis.DataSet();
+    var edges = new vis.DataSet();
 
-    // create a network
+    Object.keys(continents).forEach(function (key) {
+        nodes.add({
+            id: `${key}`,
+            label: `${continents[key].name}`,
+            color: `${continents[key].color}`,
+            shape: "ellipse",
+            font:{color:"white",size:36}
+        });
+    });
+    Object.keys(countries).forEach(function (keyCOU) {
+        nodes.add({
+            id: `${keyCOU}`,
+            label: `${countries[keyCOU].name}`,
+            shape: "box",
+            font: { color: "white", size: 12.5 },
 
-    // provide the data in the vis format
+            continent: `${countries[keyCOU].continent}`
+        });
+
+        //can't break with foreach, using FOR OF instead
+        let continentKeys = Object.keys(continents);
+
+        for (keyCON of continentKeys) {
+            if (countries[keyCOU].continent === keyCON) {
+                edges.add({ from: `${keyCON}`, to: `${keyCOU}`, color: `${continents[keyCON].color}` });
+                break;
+            }
+        };
+
+
+        
+        //Object.keys(continents).forEach(function (keyCON) {
+        //    console.log(keyCON,countries[keyCOU].continent);
+        //    if (countries[keyCOU].continent === keyCON) {
+        //        edges.add({ from: `${keyCON}`, to: `${keyCOU}` });
+        //    }
+        //});
+
+
+    });
     var data = {
         nodes: nodes,
         edges: edges
     };
-    var options = {};
+
+    var options = {
+        layout: {
+            improvedLayout: false
+        }
+};
 
     // initialize your network!
     var network = new vis.Network(history, data, options);
 }
+
