@@ -5,19 +5,18 @@ const buttons = document.querySelectorAll('.grid-item > button');
 const paragraph = document.querySelector('#intro');
 const history = document.querySelector('#history-network');
 
-
+var continents;
+var countries;
+var languages;
 
 
 const after_load=function(){
     showTopics.classList.add('fade-in');
 
-    let continents = read_file("../data/continents.json");
-    let countries = read_file("../data/countries.json");
-    let languages = read_file("../data/languages.json");
+    continents = read_file("../data/continents.json");
+    countries = read_file("../data/countries.json");
+    languages = read_file("../data/languages.json");
 
-    console.log(countries);
-    console.table(countries);
-    console.log(continents)
 }
 
 window.onload = after_load;
@@ -39,7 +38,7 @@ function show_grid(e) {
 function read_file(filePath) {
     var result = null;
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", filePath,true);
+    xmlhttp.open("GET", filePath, false);
     xmlhttp.send();
     if (xmlhttp.status == 200) {
         result = xmlhttp.responseText;
@@ -52,6 +51,7 @@ function window_to_show(e) {
         grid.setAttribute('style', 'display:none;');
         history.setAttribute('style', 'display:block');
 
+        console.log(countries);
         generate_network();
 
     }
