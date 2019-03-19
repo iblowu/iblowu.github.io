@@ -5,16 +5,11 @@ const buttons = document.querySelectorAll('.grid-item > button');
 const paragraph = document.querySelector('#intro');
 const history = document.querySelector('#history-network');
 
-var continents;
-var countries;
-var languages;
+
 
 
 const after_load=function(){
     showTopics.classList.add('fade-in');
-    continents = read_file("../data/continents.json");
-    countries = read_file("../data/countries.json");
-    languages = read_file("../data/languages.json");
 }
 
 window.onload = after_load;
@@ -33,11 +28,55 @@ function show_grid(e) {
     }
 }
 
+function read_server_file(filePath) {
+    var result = null;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", filePath);
+    xmlhttp.send();
+    if (xmlhttp.status == 200) {
+        result = xmlhttp.responseText;
+    }
+    return result;
+}
+
 function window_to_show(e){
     if(e.target.textContent==="History")
     {
         grid.setAttribute('style', 'display:none;');
         history.setAttribute('style', 'display:block');
+        let continents = read_file("../data/continents.json");
+        let countries = read_file("../data/countries.json");
+        let languages = read_file("../data/languages.json");
+
+        console.table(countries);
+
+        var nodes = new vis.DataSet([
+      { id: 1, label: 'Node 1' },
+      { id: 2, label: 'Node 2' },
+      { id: 3, label: 'Node 3' },
+      { id: 4, label: 'Node 4' },
+      { id: 5, label: 'Node 5' }
+        ]);
+
+        // create an array with edges
+        var edges = new vis.DataSet([
+            { from: 1, to: 3 },
+            { from: 1, to: 2 },
+            { from: 2, to: 4 },
+            { from: 2, to: 5 }
+        ]);
+
+        // create a network
+
+        // provide the data in the vis format
+        var data = {
+            nodes: nodes,
+            edges: edges
+        };
+        var options = {};
+
+        // initialize your network!
+        var network = new vis.Network(history, data, options);
     }
 
 }
@@ -47,44 +86,5 @@ buttons.forEach(function (button) {
 })
 showTopics.addEventListener('click', show_grid);
 
-function read_file(filePath) {
-    var result = null;
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", filePath);
-    xmlhttp.send();
-    if (xmlhttp.status==200) {
-        result = xmlhttp.responseText;
-    }
-    return result;
-}
 
 
-console.log(countries);
-
-var nodes = new vis.DataSet([
-      { id: 1, label: 'Node 1' },
-      { id: 2, label: 'Node 2' },
-      { id: 3, label: 'Node 3' },
-      { id: 4, label: 'Node 4' },
-      { id: 5, label: 'Node 5' }
-]);
-
-// create an array with edges
-var edges = new vis.DataSet([
-    { from: 1, to: 3 },
-    { from: 1, to: 2 },
-    { from: 2, to: 4 },
-    { from: 2, to: 5 }
-]);
-
-// create a network
-
-// provide the data in the vis format
-var data = {
-    nodes: nodes,
-    edges: edges
-};
-var options = {};
-
-// initialize your network!
-var network = new vis.Network(history, data, options);
