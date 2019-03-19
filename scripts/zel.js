@@ -11,7 +11,7 @@ const history = document.querySelector('#history-network');
 const after_load=function(){
     showTopics.classList.add('fade-in');
 
-    let continents = read_file("https://github.com/annexare/Countries/blob/master/data/countries.json");
+    let continents = read_file("../data/continents.json");
     let countries = read_file("../data/countries.json");
     let languages = read_file("../data/languages.json");
 
