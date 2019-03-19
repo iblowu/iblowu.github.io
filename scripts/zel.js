@@ -5,12 +5,16 @@ const buttons = document.querySelectorAll('.grid-item > button');
 const paragraph = document.querySelector('#intro');
 const history = document.querySelector('#history-network');
 
+var continents = read_file("../data/continents.json");
+var countries = read_file("../data/countries.json");
+var languages = read_file("../data/languages.json");
+
 
 const after_load=function(){
     showTopics.classList.add('fade-in');
-    var continents = read_file("../data/continents.json");
-    var countries = read_file("../data/countries.json");
-    var languages = read_file("../data/languages.json");
+    continents = read_file("../data/continents.json");
+    countries = read_file("../data/countries.json");
+    languages = read_file("../data/languages.json");
 }
 
 window.onload = after_load;
