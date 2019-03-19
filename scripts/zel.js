@@ -13,8 +13,8 @@ var languages;
 const after_load=function(){
     showTopics.classList.add('fade-in');
 
-    conti = JSON.parse(read_file("../data/continents.json"));
-    //countries = JSON.parse(read_file("../data/countries.json"));
+    continents = JSON.parse(read_file("../data/continents.json"));
+    count = JSON.parse(read_file("../data/countries.json"));
     //languages = JSON.parse(read_file("../data/languages.json"));
 }
 
@@ -63,7 +63,7 @@ showTopics.addEventListener('click', show_grid);
 
 
 function generate_network() {
-    console.log(continents, conti);
+    console.log(continents, count);
     var nodes = new vis.DataSet();
     var edges = new vis.DataSet();
 
@@ -120,37 +120,6 @@ function generate_network() {
 
     // initialize your network!
     var network = new vis.Network(history, data, options);
-}
-
-var continents = {
-    "AF": {
-        "name": "Africa",
-        "color": "orange"
-    },
-    "AN": {
-        "name": "Antarctica",
-        "color": "lightgray"
-    },
-    "AS": {
-        "name": "Asia",
-        "color": "yellow"
-    },
-    "EU": {
-        "name": "Europe",
-        "color": "blue"
-    },
-    "NA": {
-        "name": "North America",
-        "color": "red"
-    },
-    "OC": {
-        "name": "Oceania",
-        "color": "teal"
-    },
-    "SA": {
-        "name": "South America",
-        "color": "green"
-    }
 }
 
 var countries = {
