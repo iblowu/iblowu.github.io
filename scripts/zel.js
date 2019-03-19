@@ -25,6 +25,7 @@ function show_grid(e) {
         paragraph.classList.add('slide-out-top');
     }
 }
+
 function window_to_show(e){
     if(e.target.textContent==="History")
     {
@@ -39,7 +40,20 @@ buttons.forEach(function (button) {
 })
 showTopics.addEventListener('click', show_grid);
 
+function read_file(filePath) {
+    var result = null;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", filePath, false);
+    xmlhttp.send();
+    if (xmlhttp.status==200) {
+        result = xmlhttp.responseText;
+    }
+    return result;
+}
 
+var countries=read_file("../data/continents.json");
+
+console.log(countries);
 
 var nodes = new vis.DataSet([
       { id: 1, label: 'Node 1' },
