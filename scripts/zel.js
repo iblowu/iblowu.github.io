@@ -13,14 +13,9 @@ var languages;
 const after_load=function(){
     showTopics.classList.add('fade-in');
 
-   /* continents = JSON.parse(read_file("../data/continents.json"));
-    countries = JSON.parse(read_file("../data/countries.json"));
-<<<<<<< HEAD
-    languages = JSON.parse(read_file("../data/languages.json"));*/
-
-=======
-    languages = JSON.parse(read_file("../data/languages.json"));
->>>>>>> 53eec069015a12a239c7264f50edd6eef77b6ac5
+    //continents = JSON.parse(read_file("../data/continents.json"));
+    //countries = JSON.parse(read_file("../data/countries.json"));
+    //languages = JSON.parse(read_file("../data/languages.json"));
 }
 
 window.onload = after_load;
