@@ -13,9 +13,9 @@ var languages;
 const after_load=function(){
     showTopics.classList.add('fade-in');
 
-    continents = read_file("../data/continents.json");
-    countries = read_file("../data/countries.json");
-    languages = read_file("../data/languages.json");
+    continents = JSON.parse(read_file("../data/continents.json"));
+    countries = JSON.parse(read_file("../data/countries.json"));
+    languages = JSON.parse(read_file("../data/languages.json"));
 
 }
 
@@ -38,7 +38,7 @@ function show_grid(e) {
 function read_file(filePath) {
     var result = null;
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", filePath, false);
+    xmlhttp.open("GET", filePath, true);
     xmlhttp.send();
     if (xmlhttp.status == 200) {
         result = xmlhttp.responseText;
