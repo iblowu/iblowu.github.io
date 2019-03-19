@@ -6,11 +6,14 @@ const paragraph = document.querySelector('#intro');
 const history = document.querySelector('#history-network');
 
 
-const fade_in=function(){
+const after_load=function(){
     showTopics.classList.add('fade-in');
+    var continents = read_file("../data/continents.json");
+    var countries = read_file("../data/countries.json");
+    var languages = read_file("../data/languages.json");
 }
 
-window.onload = fade_in;
+window.onload = after_load;
 
 function show_grid(e) {
 
@@ -40,10 +43,10 @@ buttons.forEach(function (button) {
 })
 showTopics.addEventListener('click', show_grid);
 
-function read_file(filePath) {
+function read_file(filePath1, filePath2, filePath3) {
     var result = null;
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", filePath, false);
+    xmlhttp.open("GET", filePath);
     xmlhttp.send();
     if (xmlhttp.status==200) {
         result = xmlhttp.responseText;
@@ -51,7 +54,6 @@ function read_file(filePath) {
     return result;
 }
 
-var countries=read_file("../data/continents.json");
 
 console.log(countries);
 
