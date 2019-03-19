@@ -5,9 +5,9 @@ const buttons = document.querySelectorAll('.grid-item > button');
 const paragraph = document.querySelector('#intro');
 const history = document.querySelector('#history-network');
 
-var continents = read_file("../data/continents.json");
-var countries = read_file("../data/countries.json");
-var languages = read_file("../data/languages.json");
+var continents;
+var countries;
+var languages;
 
 
 const after_load=function(){
