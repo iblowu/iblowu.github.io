@@ -43,7 +43,7 @@ buttons.forEach(function (button) {
 })
 showTopics.addEventListener('click', show_grid);
 
-function read_file(filePath1, filePath2, filePath3) {
+function read_file(filePath) {
     var result = null;
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("GET", filePath);
