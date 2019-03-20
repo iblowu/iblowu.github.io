@@ -1,0 +1,2 @@
+Fix filtering by countries and languages.
+Fix redirection ti wikipedia upon filtering by continents.

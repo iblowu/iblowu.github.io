@@ -33,9 +33,16 @@
         <div class="grid-item blurred-body tinted"><button></button></div>
         <div class="grid-item blurred-body tinted"><button>useful websites</button></div>
     </div>
-    <div id="history-network">
 
+    <div id="history-container">
+        <input type="radio" name="query" value="continent" checked/> continent
+        <input type="radio" name="query" value="country" /> country
+        <input type="radio" name="query" value="language" /> language
+        <input id="query-box" type="text" />
+        <button name="filter" type="button">filter</button>
+        <div id="history-network"> </div>
     </div>
+
 
     <script src="../scripts/zel.js"></script>
 

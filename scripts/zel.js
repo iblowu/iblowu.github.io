@@ -1,22 +1,43 @@
-﻿// JavaScript source code
-const showTopics = document.querySelector('#actions > button');
+﻿const showTopicsButton = document.querySelector('#actions > button');
 const grid = document.querySelector('.wrapper');
 const buttons = document.querySelectorAll('.grid-item > button');
 const paragraph = document.querySelector('#intro');
+const historyContainer = document.querySelector('#history-container');
 const history = document.querySelector('#history-network');
+
+const queryBox = document.querySelector('#query-box');
+const filterButton = document.getElementsByName("filter")[0];
+
 const wiki = "https://en.wikipedia.org/wiki/";
+
+var nodes = new vis.DataSet();
+var edges = new vis.DataSet();
+var data = {
+    nodes: nodes,
+    edges: edges
+};
+var options = {
+    layout: {
+        improvedLayout: false
+    }
+};
+var network;
+var originalNodes = 1;
+var networkGenerated = 0;
+
+var countryKeys=[];
+var continentKeys=[];
 
 var continents;
 var countries;
 var languages;
 
 paragraph.addEventListener('animationend', function (e) {
-    console.log(e);
     paragraph.setAttribute('style', 'display:none');
 });
 
 const after_load=function(){
-    showTopics.classList.add('fade-in');
+    showTopicsButton.classList.add('fade-in');
 
     continents = JSON.parse(read_file("../data/continents.json"));
     countries = JSON.parse(read_file("../data/countries.json")); 
@@ -34,7 +55,7 @@ function show_grid(e) {
         document.getElementById("a1").volume = 0.05;*/
         grid.classList.add('swing-in-top-fwd');
         grid.setAttribute('style', 'display:grid;');
-        history.setAttribute('style', 'display:none');
+        historyContainer.setAttribute('style', 'display:none');
         paragraph.classList.add('slide-out-top');
     }
 }
@@ -53,79 +74,121 @@ function read_file(filePath) {
 function window_to_show(e) {
     if (e.target.textContent === "History") {
         grid.setAttribute('style', 'display:none;');
-        history.setAttribute('style', 'display:block');
-
-        generate_network();
+        historyContainer.setAttribute('style', 'display:block');
+        generate_network(networkGenerated);
     }
+}
+
+function filter_based_on_radio(radioVal) {
+    if (queryBox.value.length > 0) {
+        let filteredNodes;
+        switch (radioVal) {
+            case "continent":
+                    filteredNodes = nodes.get({
+                    filter: function (node) {
+                        let connEdges = edges.get({
+                            filter: function (edge) {
+                                return edge.from == queryBox.value;
+                            }
+                        });
+                        return (connEdges.length > 0 && ((node.id === queryBox.value) || node.continent === queryBox.value));
+                    }
+                });
+                data.nodes = filteredNodes;
+                originalNodes = 0;
+                network = new vis.Network(history, data, options);
+                break;
+            case "country":
+              let  connectedNodeIDs = [];
+                filteredNodes = nodes.get({
+                    filter: function (node) {      
+                        if (node.label.includes(queryBox.value)) {
+                            connectedNodeIDs.concat(network.getConnectedNodes(node.id));
+                            return (node.label.includes(queryBox.value));
+                        }
+                    }
+                });
+                connectedNodeIDs.forEach(function(el){ 
+                    console.log(el);
+                    filteredNodes.push(nodes.get(nodeID));
+                });
+                data.nodes = filteredNodes;
+                originalNodes = 0;
+                network = new vis.Network(history, data, options);
+                break;
+            case "language":
+                break;
+        }
+    }
+    else if (originalNodes === 0) {
+        originalNodes = 1;
+        data.nodes = nodes;
+        network = new vis.Network(history, data, options);
+    }
+
+
+}
+
+function filter_history(e) {
+    let radioButton = document.querySelector('input[name="query"]:checked');
+    filter_based_on_radio(radioButton.value);
+
 }
 
 buttons.forEach(function (button) {
     button.addEventListener('click', window_to_show);
 });
-showTopics.addEventListener('click', show_grid);
+
+showTopicsButton.addEventListener('click', show_grid);
+
+filterButton.addEventListener('click', filter_history);
 
 
 
-function generate_network() {
-    var nodes = new vis.DataSet();
-    var edges = new vis.DataSet();
+function generate_network(networkGeneratedParam) {
+    if (!networkGeneratedParam) {
+        countryKeys = Object.keys(countries);
+        continentKeys = Object.keys(continents);
 
-    Object.keys(continents).forEach(function (key) {
-        nodes.add({
-            id: `${key}`,
-            label: `${continents[key].name}`,
-            color: `${continents[key].color}`,
-            shape: "ellipse",
-            font:{color:"white",size:36}
-        });
-    });
-    Object.keys(countries).forEach(function (keyCOU) {
-        nodes.add({
-            id: `${keyCOU}`,
-            label: `${countries[keyCOU].name}`,
-            shape: "box",
-            font: { color: "white", size: 12.5 },
-
-            continent: `${countries[keyCOU].continent}`
-        });
-
-        //can't break with foreach, using FOR OF instead
-        let continentKeys = Object.keys(continents);
-
-        for (keyCON of continentKeys) {
-            if (countries[keyCOU].continent === keyCON) {
-                edges.add({ from: `${keyCON}`, to: `${keyCOU}`, color: `${continents[keyCON].color}` });
-                break;
-            }
+        for(keyCON of continentKeys) {
+            nodes.add({
+                id: `${keyCON}`,
+                label: `${continents[keyCON].name}`,
+                color: `${continents[keyCON].color}`,
+                shape: "ellipse",
+                font:{color:"white",size:36}
+            });
         };
-     
-        //Object.keys(continents).forEach(function (keyCON) {
-        //    console.log(keyCON,countries[keyCOU].continent);
-        //    if (countries[keyCOU].continent === keyCON) {
-        //        edges.add({ from: `${keyCON}`, to: `${keyCOU}` });
-        //    }
-        //});
 
+        for (keyCOU of countryKeys){
 
-    });
-    var data = {
-        nodes: nodes,
-        edges: edges
-    };
+            nodes.add({
+                id: `${keyCOU}`,
+                label: `${countries[keyCOU].name}`,
+                shape: "box",
+                font: { color: "white", size: 12.5 },
 
-    var options = {
-        layout: {
-            improvedLayout: false
-        }
-    };
+                continent: `${countries[keyCOU].continent}`
+            });
 
-    // initialize your network!
-    var network = new vis.Network(history, data, options);
+            for (keyCON of continentKeys) {
+                if (countries[keyCOU].continent === keyCON) {
+                    edges.add({ from: `${keyCON}`, to: `${keyCOU}`, color: `${continents[keyCON].color}` });
+                    break;
+                }
+            };
+        };
 
-    network.on('doubleClick', function (e) {
-        let node = nodes.get(e.nodes[0]);
-        window.open(wiki+node.label,'_blank');
-    });
+        network = new vis.Network(history, data, options);
+
+        network.on('doubleClick', function (e) {
+            let node = data.nodes.get(e.nodes[0]);
+            console.log('hehe');
+        window.open(wiki + node.label, '_blank');
+        });
+
+        networkGenerated = 1;
+    }
 }
 /*
 var continents = {
