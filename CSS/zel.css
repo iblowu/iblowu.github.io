@@ -196,11 +196,18 @@ p {
     }
 }
 
-#history-network{
-    display:none;
-    width:80%;
-    height:70%;
+#history-container {
+    display: none;
+    width: 90%;
+    height: 90%;
     margin: 0 auto;
+    background: white;
+}
+
+
+#history-network{
+    width:100%;
+    height:90%;
     background:white;
 }
 
