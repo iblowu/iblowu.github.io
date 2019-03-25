@@ -203,6 +203,20 @@ p {
     margin: 0 auto;
     background:rgb(18,18,18);
 }
+#history-query-container > *{
+    outline:none;
+}
+
+#history-query-container{
+    background:white;
+}
+
+
+select[name=query-type]{
+}
+select > .activated{
+    display:inline;
+}
 
 
 #history-network{

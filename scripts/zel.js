@@ -6,6 +6,9 @@ const historyContainer = document.querySelector('#history-container');
 const history = document.querySelector('#history-network');
 
 const queryBox = document.querySelector('#query-box');
+const dropDown = document.getElementsByName("query-type")[0];
+const checkBox = document.getElementsByName("hierarchy")[0];
+const resetButton = document.getElementsByName("reset")[0];
 const filterButton = document.getElementsByName("filter")[0];
 
 const wiki = "https://en.wikipedia.org/wiki/";
@@ -18,7 +21,17 @@ var data = {
 };
 var options = {
     layout: {
-        improvedLayout: false
+        improvedLayout: false,
+        hierarchical: {
+            enabled: false,
+            sortMethod: "directed"
+        }
+    },
+    physics: {
+        enabled: true,
+        hierarchicalRepulsion: {
+            nodeDistance:170
+        }
     },
     groups: {
         continents: {
@@ -33,7 +46,6 @@ var options = {
 };
 var network;
 var filteredNetwork;
-var originalNodes = 1;
 var networkGenerated = 0;
 
 var countryKeys=[];
@@ -50,9 +62,9 @@ paragraph.addEventListener('animationend', function (e) {
 const after_load=function(){
     showTopicsButton.classList.add('fade-in');
 
-    continents = JSON.parse(read_file("../data/continents.json"));
+   /*continents = JSON.parse(read_file("../data/continents.json"));
     countries = JSON.parse(read_file("../data/countries.json")); 
-    languages = JSON.parse(read_file("../data/languages.json"));
+    languages = JSON.parse(read_file("../data/languages.json"));*/
 }
 
 window.onload = after_load;
@@ -91,20 +103,22 @@ function window_to_show(e) {
 }
 
 function filter_based_on_radio(radioVal) {
-    let filteredNetwork;
     let filteredNodes=[];
 
     if (queryBox.value.length > 0) {
         switch (radioVal) {
             case "continent":
+                let queryContinentList = queryBox.value.split(";");
                 let childNodeIDs=[];
                 filteredNodes.push(
                               nodes.get({
                                 filter: function (node) {
                                     if (node.group === "continents")
-                                        if (node.label.toLowerCase() == queryBox.value.toLowerCase() || node.id == queryBox.value) {
-                                            childNodeIDs.push(network.getConnectedNodes(node.id));
-                                            return true;
+                                        for (continent of queryContinentList) {
+                                            if (node.label.toLowerCase() == continent || node.id == continent) {
+                                                childNodeIDs.push(network.getConnectedNodes(node.id));
+                                                return true;
+                                            }
                                         }
                                     }
                               })
@@ -118,23 +132,35 @@ function filter_based_on_radio(radioVal) {
                                 }
                              })
                );
-               console.log(filteredNodes);
                 filteredNodes = filteredNodes.flat();
                 data.nodes = filteredNodes;
-                originalNodes = 0;
                 filteredNetwork = new vis.Network(history, data, options);
+                filteredNetwork.setOptions(hierarchical_display());
                 break;
             case "country":
+                let queryCountryList = queryBox.value.toLowerCase().split(";");
                 let parentNodeIDs=[] ;
                 filteredNodes.push(
                              nodes.get({
                                  filter: function (node) {
-                                     if (node.group==="countries")
-                                     if (node.label.toLowerCase().startsWith(queryBox.value.toLowerCase())) {
-                                        parentNodeIDs.push(network.getConnectedNodes(node.id));
-                                        return true;
-                                    }
-                                }
+                                     
+                                     if (node.group === "countries" && dropDown.value === "start") {
+                                         for (country of queryCountryList) {
+                                             if (node.label.toLowerCase().startsWith(country)) {
+                                                 parentNodeIDs.push(network.getConnectedNodes(node.id));
+                                                 return true;
+                                             }
+                                         }
+                                     }
+                                     else if (node.group === "countries" && dropDown.value === "anywhere") {
+                                         for (country of queryCountryList) {
+                                             if (node.label.toLowerCase().includes(country)) {
+                                                 parentNodeIDs.push(network.getConnectedNodes(node.id));
+                                                 return true;
+                                             }
+                                         }
+                                     }
+                                 }
                              })
                 );
                 parentNodeIDs=parentNodeIDs.flat();
@@ -149,28 +175,36 @@ function filter_based_on_radio(radioVal) {
                 );
                 filteredNodes=filteredNodes.flat();
                 data.nodes = filteredNodes;
-                originalNodes = 0;
                 filteredNetwork = new vis.Network(history, data, options);
+                filteredNetwork.setOptions(hierarchical_display());
                 break;
             case "language":
                 break;
         }
+        filteredNetwork.on('doubleClick', function (properties) {
+            let ids = properties.nodes;
+            let clickedNodes = nodes.get(ids);
+            window.open(wiki + clickedNodes[0].label, '_blank');
+        });
     }
-
-    else if (originalNodes === 0) {
-        originalNodes = 1;
-        data.nodes = nodes;
-        network = new vis.Network(history, data, options);
-    }
-
-    filteredNetwork.on('doubleClick', function (properties) {
-        let ids = properties.nodes;
-        let clickedNodes = nodes.get(ids);
-        window.open(wiki + clickedNodes[0].label, '_blank');
-    });
+    else{
+                network.setOptions(hierarchical_display());
+        }
 }
 
-function filter_history(e) {
+function hierarchical_display() {
+    if (checkBox.checked)
+        return {layout: {hierarchical: {enabled: true }  }}
+    else
+        return {layout: {hierarchical: {enabled: false }  }}
+}
+
+function reset_network(e) {
+    data.nodes = nodes;
+    network = new vis.Network(history, data, options);
+}
+
+function manipulate_network(e) {
     let radioButton = document.querySelector('input[name="query"]:checked');
     filter_based_on_radio(radioButton.value);
 
@@ -181,17 +215,14 @@ buttons.forEach(function (button) {
 });
 
 showTopicsButton.addEventListener('click', show_grid);
-
-filterButton.addEventListener('click', filter_history);
-
-
+filterButton.addEventListener('click', manipulate_network);
+resetButton.addEventListener('click', reset_network);
 
 function generate_network(networkGeneratedParam) {
     if (!networkGeneratedParam) {
         countryKeys = Object.keys(countries);
         continentKeys = Object.keys(continents);
 
-        //adding continents 
         for(keyCON of continentKeys) {
             nodes.add({
                 id: `${keyCON}`,
@@ -202,7 +233,6 @@ function generate_network(networkGeneratedParam) {
         };
 
         for (keyCOU of countryKeys){
-            console.log(continents[countries[keyCOU].continent].color);
             nodes.add({
                 id: `${keyCOU}`,
                 label: `${countries[keyCOU].name}`,
@@ -226,11 +256,10 @@ function generate_network(networkGeneratedParam) {
             let clickedNodes = nodes.get(ids);
             window.open(wiki + clickedNodes[0].label, '_blank');
         });
-
         networkGenerated = 1;
     }
 }
-/*
+
 var continents = {
     "AF": {
         "name": "Africa",
@@ -3119,4 +3148,3 @@ var countries = {
         ]
     }
 }
-*/
