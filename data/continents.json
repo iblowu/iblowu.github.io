@@ -5,11 +5,11 @@
   },
   "AN": {
     "name": "Antarctica",
-    "color": "lightgray"
+    "color": "#9C9C9C"
   },
   "AS": {
     "name": "Asia",
-    "color": "yellow"
+    "color": "#8A8A00"
   },
   "EU": {
     "name": "Europe",
@@ -17,7 +17,7 @@
   },
   "NA": {
     "name": "North America",
-    "color":  "red"
+    "color": "red"
   },
   "OC": {
     "name": "Oceania",

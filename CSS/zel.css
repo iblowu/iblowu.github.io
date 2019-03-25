@@ -8,7 +8,7 @@ html, body {
 
 
 body {
-    background: url("../content/hotline.jpg") no-repeat center center fixed;
+    background: url("../data/photos-videos/hotline.jpg") no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -16,13 +16,13 @@ body {
 }
 
 .blurred-body {
-    background: url("../content/hotlineblur.jpg") no-repeat center center fixed;
+    background: url("../data/photos-videos/hotlineblur.jpg") no-repeat center center fixed;
     background-size: cover;
 }
 
 .blurred-body .tinted {
     background-image: linear-gradient(0deg,rgba(255,255,255,.2),rgba(255,255,255,.2));
-    background: url("../content/hotlineblur.jpg");
+    background: url("../data/photos-videos/hotlineblur.jpg");
 }
 
 p {
@@ -201,14 +201,13 @@ p {
     width: 90%;
     height: 90%;
     margin: 0 auto;
-    background: white;
+    background:rgb(18,18,18);
 }
 
 
 #history-network{
     width:100%;
-    height:90%;
-    background:white;
+    height:97%;
 }
 
 
