@@ -82,13 +82,13 @@ const after_load=function(){
     let topicImgPath="../data/photos-videos/wiki.png"
     showTopicsButton.classList.add('fade-in');
 
-    for (key in countries)
-        countryCodeNameMap[countries[key].name] = key;
-
      continents = JSON.parse(read_file("../data/continents.json"));
      countries = JSON.parse(read_file("../data/countries.json")); 
      languages = JSON.parse(read_file("../data/languages.json"));
      topics = JSON.parse(read_file("../data/topics.json"));
+
+     for (key in countries)
+         countryCodeNameMap[countries[key].name] = key;
 
     topicKeys = Object.keys(topics);
 
@@ -99,9 +99,10 @@ const after_load=function(){
             label: topics[keyTOPIC].label,
             url: topics[keyTOPIC].url,
             participants: topics[keyTOPIC].participants.split(";"),
-            type: topics[keyTOPIC].conflict,
+            type: topics[keyTOPIC].type,
             begin: topics[keyTOPIC].begin,
             end: topics[keyTOPIC].end,
+            summary:topics[keyTOPIC].summary,
             group: "topics"
         });
     }

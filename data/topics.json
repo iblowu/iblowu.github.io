@@ -1,27 +1,75 @@
 {
   "1": {
-    "label": "Iraq invasion of Iran",
+    "label": "Iran-Iraq War",
     "url": "https://en.wikipedia.org/wiki/Iran%E2%80%93Iraq_War",
     "type": "conflict",
-    "participants": "Iraq;Iran;",
-    "begin": "22.09.1980",
-    "end": "20.08.1980"
+    "participants": "Iraq;Iran",
+    "begin": "1980-09-22",
+    "end": "1988-08-02",
+    "summary": "Iraq invasion of Iran"
 
   },
   "2": {
     "label": "Invasion of Kuwait",
     "url": "https://en.wikipedia.org/wiki/Invasion_of_Kuwait",
     "type": "conflict",
-    "participants": "Iraq;Kuwait;",
-    "begin": "02.08.1990",
-    "end": "04.08.1990"
+    "participants": "Iraq;Kuwait",
+    "begin": "1990-08-02",
+    "end": "1990-08-04",
+    "summary": "Iraqs invasion of Kuwait"
   },
   "3": {
     "label": "Gulf War",
     "url": "https://en.wikipedia.org/wiki/Gulf_War",
     "type": "conflict",
-    "participants": "Iraq;Kuwait;Saudi Arabia;United States;",
-    "begin": "02.08.1990",
-    "end": "28.02.1991"
+    "participants": "Iraq;Kuwait;Saudi Arabia;United States",
+    "begin": "1990-08-02",
+    "end": "1991-02-28",
+    "summary": "War against Iraq because of Iraqs invasion of Kuwait"
+  },
+  "4": {
+    "label": "United Arab Republic",
+    "url": "https://en.wikipedia.org/wiki/United_Arab_Republic",
+    "type": "event",
+    "participants": "Egypt;Syria",
+    "begin": "1958",
+    "end": "1961",
+    "summary": "United Syria and Egypt in the 20th century"
+  },
+  "5": {
+    "label": "Winter War",
+    "url": "https://en.wikipedia.org/wiki/Winter_War",
+    "type": "conflict",
+    "participants": "Russia;Finland",
+    "begin": "1939-11-30",
+    "end": "1940-03-13",
+    "summary": "War between Finland and Russia 1939-1940"
+  },
+  "6": {
+    "label": "Gulf War",
+    "url": "https://en.wikipedia.org/wiki/Grand_Duchy_of_Finland",
+    "type": "event",
+    "participants": "Russia;Finland",
+    "begin": "1809",
+    "end": "1917",
+    "summary": "Finland under russias rule"
+  },
+  "7": {
+    "label": "History of Egypt under the British",
+    "url": "https://en.wikipedia.org/wiki/History_of_Egypt_under_the_British",
+    "type": "event",
+    "participants": "Egypt;Britain",
+    "begin": "1882",
+    "end": "1956",
+    "summary": "Egypt under British rule"
+  },
+  "8": {
+    "label": "Iranian Revolution",
+    "url": "https://en.wikipedia.org/wiki/Iranian_Revolution",
+    "type": "event",
+    "participants": "Egypt;Britain",
+    "begin": "1978-01-07",
+    "end": "1979-02-11",
+    "summary": "Iranian Revolution"
   }
 }
