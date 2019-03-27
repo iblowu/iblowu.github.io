@@ -37,13 +37,14 @@
     <div id="history-container">
         <div id="history-query-container">
             <input type="radio" name="query" value="continent" checked /> continent
+            <input id="query-continent" type="text" placeholder="split values with ;" /> <!-- need to implement-->
             <input type="radio" name="query" value="country" /> country
+            <input id="query-country" type="text" placeholder="split values with ;" />
             <select name="query-type">
                 <option value="start">from the start</option>
                 <option value="anywhere">anywhere</option>
             </select>
             <input type="radio" name="query" value="language" /> language
-            <input id="query-box" type="text" placeholder="split values with ;" />
             <input type="checkbox" name="hierarchy" value="true" /> hierarchical
             <button name="filter" type="button">filter</button>
             <button name="reset" style="float:right" type="button">reset</button>

@@ -1,3 +1,27 @@
 {
-  
+  "1": {
+    "label": "Iraq invasion of Iran",
+    "url": "https://en.wikipedia.org/wiki/Iran%E2%80%93Iraq_War",
+    "type": "conflict",
+    "participants": "Iraq;Iran;",
+    "begin": "22.09.1980",
+    "end": "20.08.1980"
+
+  },
+  "2": {
+    "label": "Invasion of Kuwait",
+    "url": "https://en.wikipedia.org/wiki/Invasion_of_Kuwait",
+    "type": "conflict",
+    "participants": "Iraq;Kuwait;",
+    "begin": "02.08.1990",
+    "end": "04.08.1990"
+  },
+  "3": {
+    "label": "Gulf War",
+    "url": "https://en.wikipedia.org/wiki/Gulf_War",
+    "type": "conflict",
+    "participants": "Iraq;Kuwait;Saudi Arabia;United States;",
+    "begin": "02.08.1990",
+    "end": "28.02.1991"
+  }
 }

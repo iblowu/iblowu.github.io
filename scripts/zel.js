@@ -5,7 +5,7 @@ const paragraph = document.querySelector('#intro');
 const historyContainer = document.querySelector('#history-container');
 const history = document.querySelector('#history-network');
 
-const queryBox = document.querySelector('#query-box');
+const queryBox = document.querySelector('#query-country');
 const dropDown = document.getElementsByName("query-type")[0];
 const checkBox = document.getElementsByName("hierarchy")[0];
 const resetButton = document.getElementsByName("reset")[0];
@@ -13,7 +13,10 @@ const filterButton = document.getElementsByName("filter")[0];
 
 const wiki = "https://en.wikipedia.org/wiki/";
 
+var countryCodeNameMap = {};
+
 var nodes = new vis.DataSet();
+var topicNodes = new vis.DataSet();
 var edges = new vis.DataSet();
 var data = {
     nodes: nodes,
@@ -21,6 +24,7 @@ var data = {
 };
 var options = {
     layout: {
+        randomSeed:2,
         improvedLayout: false,
         hierarchical: {
             enabled: false,
@@ -33,6 +37,8 @@ var options = {
             nodeDistance:170
         }
     },
+    interaction: { hover: true },
+    nodes: { borderWidth: 3},
     groups: {
         continents: {
             shape: "ellipse",
@@ -41,6 +47,12 @@ var options = {
         countries: {
             shape: "box",
             font: { color: "white", size: 12.5 },
+            color:{  hover: {border: "green" } }
+        },
+        topics:{
+            shape: "circularImage",
+            color: "white",
+            font:{color:"white",size:10}
         }
     }
 };
@@ -58,13 +70,41 @@ var languages;
 paragraph.addEventListener('animationend', function (e) {
     paragraph.setAttribute('style', 'display:none');
 });
+buttons.forEach(function (button) {
+    button.addEventListener('click', window_to_show);
+});
+showTopicsButton.addEventListener('click', show_grid);
+filterButton.addEventListener('click', manipulate_network);
+resetButton.addEventListener('click', reset_network);
+
 
 const after_load=function(){
+    let topicImgPath="../data/photos-videos/wiki.png"
     showTopicsButton.classList.add('fade-in');
 
-   /*continents = JSON.parse(read_file("../data/continents.json"));
-    countries = JSON.parse(read_file("../data/countries.json")); 
-    languages = JSON.parse(read_file("../data/languages.json"));*/
+    for (key in countries)
+        countryCodeNameMap[countries[key].name] = key;
+
+     continents = JSON.parse(read_file("../data/continents.json"));
+     countries = JSON.parse(read_file("../data/countries.json")); 
+     languages = JSON.parse(read_file("../data/languages.json"));
+     topics = JSON.parse(read_file("../data/topics.json"));
+
+    topicKeys = Object.keys(topics);
+
+    for (keyTOPIC of topicKeys) {
+        topicNodes.add({
+            id: keyTOPIC,
+            image: topicImgPath,
+            label: topics[keyTOPIC].label,
+            url: topics[keyTOPIC].url,
+            participants: topics[keyTOPIC].participants.split(";"),
+            type: topics[keyTOPIC].conflict,
+            begin: topics[keyTOPIC].begin,
+            end: topics[keyTOPIC].end,
+            group: "topics"
+        });
+    }
 }
 
 window.onload = after_load;
@@ -109,29 +149,29 @@ function filter_based_on_radio(radioVal) {
         switch (radioVal) {
             case "continent":
                 let queryContinentList = queryBox.value.split(";");
-                let childNodeIDs=[];
+                let childNodeIDs = [];
                 filteredNodes.push(
                               nodes.get({
-                                filter: function (node) {
-                                    if (node.group === "continents")
-                                        for (continent of queryContinentList) {
-                                            if (node.label.toLowerCase() == continent || node.id == continent) {
-                                                childNodeIDs.push(network.getConnectedNodes(node.id));
-                                                return true;
-                                            }
-                                        }
-                                    }
+                                  filter: function (node) {
+                                      if (node.group === "continents")
+                                          for (continent of queryContinentList) {
+                                              if (node.label.toLowerCase() == continent || node.id == continent) {
+                                                  childNodeIDs.push(network.getConnectedNodes(node.id));
+                                                  return true;
+                                              }
+                                          }
+                                  }
                               })
                 );
-               childNodeIDs=childNodeIDs.flat();
-               filteredNodes.push(
-                             nodes.get({
-                                 filter: function (node) {
-                                    if(node.group ==="countries")
-                                        return childNodeIDs.includes(node.id);
-                                }
-                             })
-               );
+                childNodeIDs = childNodeIDs.flat();
+                filteredNodes.push(
+                              nodes.get({
+                                  filter: function (node) {
+                                      if (node.group === "countries")
+                                          return childNodeIDs.includes(node.id);
+                                  }
+                              })
+                );
                 filteredNodes = filteredNodes.flat();
                 data.nodes = filteredNodes;
                 filteredNetwork = new vis.Network(history, data, options);
@@ -139,11 +179,11 @@ function filter_based_on_radio(radioVal) {
                 break;
             case "country":
                 let queryCountryList = queryBox.value.toLowerCase().split(";");
-                let parentNodeIDs=[] ;
+                let parentNodeIDs = [];
                 filteredNodes.push(
                              nodes.get({
                                  filter: function (node) {
-                                     
+
                                      if (node.group === "countries" && dropDown.value === "start") {
                                          for (country of queryCountryList) {
                                              if (node.label.toLowerCase().startsWith(country)) {
@@ -163,7 +203,7 @@ function filter_based_on_radio(radioVal) {
                                  }
                              })
                 );
-                parentNodeIDs=parentNodeIDs.flat();
+                parentNodeIDs = parentNodeIDs.flat();
                 filteredNodes.push(
                              nodes.get({
                                  filter: function (node) {
@@ -173,7 +213,7 @@ function filter_based_on_radio(radioVal) {
                                  }
                              })
                 );
-                filteredNodes=filteredNodes.flat();
+                filteredNodes = filteredNodes.flat();
                 data.nodes = filteredNodes;
                 filteredNetwork = new vis.Network(history, data, options);
                 filteredNetwork.setOptions(hierarchical_display());
@@ -186,10 +226,12 @@ function filter_based_on_radio(radioVal) {
             let clickedNodes = nodes.get(ids);
             window.open(wiki + clickedNodes[0].label, '_blank');
         });
+
+       
     }
-    else{
-                network.setOptions(hierarchical_display());
-        }
+    else {
+        network.setOptions(hierarchical_display());
+    }
 }
 
 function hierarchical_display() {
@@ -210,14 +252,6 @@ function manipulate_network(e) {
 
 }
 
-buttons.forEach(function (button) {
-    button.addEventListener('click', window_to_show);
-});
-
-showTopicsButton.addEventListener('click', show_grid);
-filterButton.addEventListener('click', manipulate_network);
-resetButton.addEventListener('click', reset_network);
-
 function generate_network(networkGeneratedParam) {
     if (!networkGeneratedParam) {
         countryKeys = Object.keys(countries);
@@ -225,25 +259,25 @@ function generate_network(networkGeneratedParam) {
 
         for(keyCON of continentKeys) {
             nodes.add({
-                id: `${keyCON}`,
-                label: `${continents[keyCON].name}`,
-                color: `${continents[keyCON].color}`,
+                id: keyCON,
+                label: continents[keyCON].name,
+                color: continents[keyCON].color,
                 group: "continents"
             });
         };
 
         for (keyCOU of countryKeys){
             nodes.add({
-                id: `${keyCOU}`,
-                label: `${countries[keyCOU].name}`,
-                continent: `${countries[keyCOU].continent}`,
-                color: `${continents[countries[keyCOU].continent].color}`,
+                id: keyCOU,
+                label: countries[keyCOU].name,
+                continent: countries[keyCOU].continent,
+                color: continents[countries[keyCOU].continent].color,
                 group: "countries"
             });
 
             for (keyCON of continentKeys) {
                 if (countries[keyCOU].continent === keyCON) {
-                    edges.add({ from: `${keyCON}`, to: `${keyCOU}`, color: `${continents[keyCON].color}` });
+                    edges.add({ from: keyCON, to: keyCOU, color: continents[keyCON].color });
                     break;
                 }
             };
@@ -252,11 +286,71 @@ function generate_network(networkGeneratedParam) {
         network = new vis.Network(history, data, options);
 
         network.on('doubleClick', function (properties) {
-            let ids = properties.nodes;
-            let clickedNodes = nodes.get(ids);
-            window.open(wiki + clickedNodes[0].label, '_blank');
+            if(properties.nodes.length !==0){
+                let ids = properties.nodes;
+                let clickedNodes = nodes.get(ids);
+                window.open(wiki + clickedNodes[0].label, '_blank');
+            }
+        });
+
+        network.on('click', function (properties) {
+            if (properties.nodes.length !== 0) {
+                let ids = properties.nodes;
+                let clickedNodes = nodes.get(ids);
+                topicNodes.forEach(function (topic) {
+                    console.log(nodes.get(topic.id));
+                    if(topic.participants.includes(clickedNodes[0].label) && !nodes.get(topic.id)){
+                        data.nodes.add(
+                            topic
+                        );
+                        console.log(nodes.get(topic.id));
+                        topic.participants.forEach(function (participant) {
+                            data.edges.add(
+                                { from: countryCodeNameMap[participant], to:topic.id, arrows:'to' })
+                        });
+                    }
+                    //else if (topic.participants.includes(clickedNodes[0].label) && !nodes.get(topic.id)) {
+                    //    data.nodes.remove(
+                    //        topic.id
+                    //    );
+                    //    console.log(nodes.get(topic.id));
+                    //    topic.participants.forEach(function (participant) {
+                    //        data.edges.add(
+                    //            { from: topic.id, to: countryCodeNameMap[participant], arrows: 'from' })
+                    //    });
+                    //}
+                });
+            }
         });
         networkGenerated = 1;
+    }
+}
+/*
+var topics = {
+    "1": {
+        "label": "Iraq invasion of Iran",
+        "url": "https://en.wikipedia.org/wiki/Iran%E2%80%93Iraq_War",
+        "type": "conflict",
+        "participants": "Iraq;Iran;",
+        "begin": "22.09.1980",
+        "end": "20.08.1980"
+
+    },
+    "2": {
+        "label": "Invasion of Kuwait",
+        "url": "https://en.wikipedia.org/wiki/Invasion_of_Kuwait",
+        "type": "conflict",
+        "participants": "Iraq;Kuwait;",
+        "begin": "02.08.1990",
+        "end": "04.08.1990"
+    },
+    "3": {
+        "label": "Gulf War",
+        "url": "https://en.wikipedia.org/wiki/Gulf_War",
+        "type": "conflict",
+        "participants": "Iraq;Kuwait;Saudi Arabia;United States;",
+        "begin": "02.08.1990",
+        "end": "28.02.1991"
     }
 }
 
@@ -3148,3 +3242,4 @@ var countries = {
         ]
     }
 }
+*/
